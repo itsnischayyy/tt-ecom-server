@@ -16,16 +16,14 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = plainToClass(User, createUserDto);
-    user.password = createUserDto.password;
-    return this.userRepository.save(user);
+    return this.userRepository.createUser(createUserDto);
   }
 
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: string): Promise<User> {
     const user = await this.userRepository.findOne( {where: {id}});
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
@@ -33,7 +31,7 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, user: Partial<User>): Promise<User> {
+  async update(id: string, user: Partial<User>): Promise<User> {
     await this.userRepository.update(id, user);
     const updatedUser = await this.userRepository.findOne( {where: {id}});
     if (!updatedUser) {
@@ -42,7 +40,7 @@ export class UserService {
     return updatedUser;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const result = await this.userRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`User with ID ${id} not found`);
@@ -57,7 +55,7 @@ export class UserService {
     return user;
   }
 
-  async findUserWithOrders(userId: number): Promise<User> {
+  async findUserWithOrders(userId: string): Promise<User> {
     const user = await this.userRepository.findUserWithOrders(userId);
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found`);

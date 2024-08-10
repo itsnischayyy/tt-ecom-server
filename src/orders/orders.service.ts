@@ -75,7 +75,7 @@ export class OrdersService {
     }
   }
 
-  async findByUser(userId: number): Promise<Order[]> {
+  async findByUser(userId: string): Promise<Order[]> {
     const orders = await this.orderRepository.findByUser(userId);
     if (orders.length === 0) {
       throw new NotFoundException(`No orders found for user ID ${userId}`);

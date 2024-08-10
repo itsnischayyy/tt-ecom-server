@@ -1,17 +1,17 @@
 import { Exclude } from 'class-transformer';
 import { Order } from 'src/orders/entities/order.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert, Index } from 'typeorm';
+import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
 
-  @Index({ unique: true })
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -20,6 +20,13 @@ export class User {
 
   @Column()
   address: string;
+
+  @Column({
+    type: 'enum',
+    enum: ["user", "admin"],
+    default: 'user',
+  })
+  roles: string[];
 
   @CreateDateColumn()
   createdAt: Date;
@@ -30,8 +37,8 @@ export class User {
   @OneToMany(() => Order, order => order.user)
   orders: Order[];
 
-//   @BeforeInsert()
-//   async hashPassword() {
-//     this.password = await bcrypt.hash(this.password, 10);
-//   }
+  @BeforeInsert()
+  async beforeInsert() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }

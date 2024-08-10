@@ -7,9 +7,13 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'db/data-source';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [ TypeOrmModule.forRoot(dataSourceOptions), UsersModule, ProductsModule, OrdersModule, CategoriesModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), // Add this line
+    TypeOrmModule.forRoot(dataSourceOptions), UsersModule, ProductsModule, OrdersModule, CategoriesModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

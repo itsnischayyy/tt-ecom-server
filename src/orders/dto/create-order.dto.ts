@@ -3,7 +3,7 @@ import { OrderStatus } from '../entities/order.entity';
 
 export class CreateOrderDto {
   @IsNotEmpty()
-  userId: number;
+  userId: string;
 
   @IsEnum(OrderStatus)
   status: OrderStatus;

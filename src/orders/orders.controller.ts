@@ -33,7 +33,7 @@ export class OrdersController {
   }
 
   @Get('user/:userId')
-  async findByUser(@Param('userId') userId: number): Promise<Order[]> {
+  async findByUser(@Param('userId') userId: string): Promise<Order[]> {
     return this.orderService.findByUser(userId);
   }
 

@@ -5,7 +5,7 @@ import { Order } from '../entities/order.entity';
 export class OrderRepository extends Repository<Order> {
 
   // Find orders by user
-  async findByUser(userId: number): Promise<Order[]> {
+  async findByUser(userId: string): Promise<Order[]> {
     return this.find({ where: { user: { id: userId } }, relations: ['products', 'user'] });
   }
 
